@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cloud SQL Visualization</title>
+    <style>
+      :root {
+        --bg: #eef4f0;
+        --paper: rgba(255, 255, 255, 0.92);
+        --ink: #17202a;
+        --muted: #5d6874;
+        --line: #d8e1db;
+        --accent: #0f766e;
+        --accent-2: #2563eb;
+        --accent-3: #b45309;
+        --shadow: 0 18px 44px rgba(23, 32, 42, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 24rem),
+          radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 20rem),
+          linear-gradient(180deg, #f6fbf7 0%, var(--bg) 100%);
+      }
+
+      .page {
+        width: min(1080px, calc(100% - 32px));
+        margin: 32px auto 56px;
+      }
+
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero, .section, .resource {
+        padding: 24px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 0.78rem;
+        color: var(--accent);
+      }
+
+      h1, h2, h3 { margin: 0; line-height: 1.1; }
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3.4rem);
+        max-width: 14ch;
+      }
+
+      p, li {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .lead {
+        margin-top: 16px;
+        max-width: 72ch;
+      }
+
+      .two-col, .resources {
+        display: grid;
+        gap: 18px;
+      }
+
+      .two-col {
+        grid-template-columns: 1.2fr 0.9fr;
+        margin-top: 22px;
+      }
+
+      .section {
+        margin-top: 24px;
+      }
+
+      .flow {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .step {
+        position: relative;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(244,249,246,0.96));
+      }
+
+      .step::after {
+        content: "↓";
+        position: absolute;
+        left: 50%;
+        bottom: -28px;
+        transform: translateX(-50%);
+        color: var(--accent-2);
+        font-size: 1.3rem;
+      }
+
+      .step:last-child::after { content: ""; }
+
+      .step small {
+        display: inline-block;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--accent);
+        font-size: 0.72rem;
+      }
+
+      .resources {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 14px;
+      }
+
+      .resource {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247,250,248,0.96));
+      }
+
+      .label {
+        display: inline-block;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 0.75rem;
+        color: var(--accent-3);
+      }
+
+      code {
+        font-family: "Courier New", monospace;
+      }
+
+      .resource-name {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 10px;
+        border: 1px dashed var(--line);
+        border-radius: 10px;
+        background: #f5f8f6;
+        font-size: 0.85rem;
+      }
+
+      @media (max-width: 820px) {
+        .two-col,
+        .resources {
+          grid-template-columns: 1fr;
+        }
+
+        .page {
+          width: min(100% - 20px, 1080px);
+          margin-top: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="card hero">
+        <p class="eyebrow">Beginner Visualization</p>
+        <h1>How This Cloud SQL Terraform Example Works</h1>
+        <p class="lead">
+          Cloud SQL is a managed database service. That means Google runs the database server for you,
+          and Terraform mainly describes what database environment you want: the instance, the database inside it,
+          and the user that can connect to it.
+        </p>
+
+        <div class="two-col">
+          <article class="card section">
+            <h2>The Big Idea</h2>
+            <p>
+              In this example, Terraform creates the database stack in three layers:
+            </p>
+            <ul>
+              <li><strong>Database server:</strong> the Cloud SQL instance</li>
+              <li><strong>Database container:</strong> the logical database inside the instance</li>
+              <li><strong>Access identity:</strong> the database user and password</li>
+            </ul>
+          </article>
+
+          <article class="card section">
+            <h2>Simple Analogy</h2>
+            <ul>
+              <li><strong>Instance</strong>: the apartment building</li>
+              <li><strong>Database</strong>: one apartment inside the building</li>
+              <li><strong>User</strong>: the person who has a key</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="card section">
+        <h2>Creation Flow</h2>
+        <div class="flow">
+          <div class="step">
+            <small>Step 1</small>
+            <h3>Create the Cloud SQL instance</h3>
+            <p>
+              Terraform first creates the managed database server itself.
+              This is <code>google_sql_database_instance.main</code>.
+            </p>
+          </div>
+
+          <div class="step">
+            <small>Step 2</small>
+            <h3>Create the logical database</h3>
+            <p>
+              Inside that instance, Terraform creates a database named for your application.
+              This is <code>google_sql_database.app</code>.
+            </p>
+          </div>
+
+          <div class="step">
+            <small>Step 3</small>
+            <h3>Create the application user</h3>
+            <p>
+              Terraform then creates a database user with a password.
+              This is <code>google_sql_user.app</code>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card section">
+        <h2>Resource-by-Resource Explanation</h2>
+        <div class="resources">
+          <article class="resource">
+            <span class="label">Managed Database Server</span>
+            <h3>Cloud SQL Instance</h3>
+            <p>
+              This is the real database server managed by Google. You choose its engine version,
+              region, and machine size.
+            </p>
+            <ul>
+              <li>Purpose: create the database server itself</li>
+              <li>In this example: MySQL 8 with a small demo tier</li>
+            </ul>
+            <div class="resource-name">google_sql_database_instance.main</div>
+          </article>
+
+          <article class="resource">
+            <span class="label">Logical Database</span>
+            <h3>Database</h3>
+            <p>
+              A Cloud SQL instance can hold multiple databases. This resource creates one of them for your app.
+            </p>
+            <ul>
+              <li>Purpose: create the schema container your app will use</li>
+              <li>Example name: <code>appdb</code></li>
+            </ul>
+            <div class="resource-name">google_sql_database.app</div>
+          </article>
+
+          <article class="resource">
+            <span class="label">Access Control</span>
+            <h3>Database User</h3>
+            <p>
+              The user is what your application logs in with. It needs a username and password.
+            </p>
+            <ul>
+              <li>Purpose: allow your app to connect to the database</li>
+              <li>Important: keep the password local and secret</li>
+            </ul>
+            <div class="resource-name">google_sql_user.app</div>
+          </article>
+
+          <article class="resource">
+            <span class="label">Useful Outputs</span>
+            <h3>Connection Information</h3>
+            <p>
+              After apply, Terraform can show values such as the instance name, connection name,
+              and public IP to help you connect from other services.
+            </p>
+            <ul>
+              <li><code>cloudsql_instance_name</code></li>
+              <li><code>cloudsql_connection_name</code></li>
+              <li><code>cloudsql_public_ip</code></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="card section">
+        <h2>What Beginners Usually Miss</h2>
+        <p><strong>1.</strong> Cloud SQL is managed, so you do not create a VM yourself.</p>
+        <p><strong>2.</strong> The instance is not the same thing as the database inside it.</p>
+        <p><strong>3.</strong> A user is separate from the database and can be managed independently.</p>
+        <p><strong>4.</strong> Passwords should stay in local-only files like <code>terraform.tfvars</code>.</p>
+      </section>
+    </main>
+  </body>
+</html>

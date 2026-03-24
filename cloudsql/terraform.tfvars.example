@@ -1,0 +1,7 @@
+project_id       = "your-gcp-project-id"
+region           = "us-west1"
+instance_name    = "cloudsql-demo-instance"
+database_name    = "appdb"
+db_tier          = "db-f1-micro"
+db_user_name     = "appuser"
+db_user_password = "change-me"
