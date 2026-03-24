@@ -1,0 +1,13 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Local-only Terraform inputs
+terraform.tfvars
+*.auto.tfvars
+
+# Module-specific local files
+lb/.terraform/
+lb/terraform.tfvars
