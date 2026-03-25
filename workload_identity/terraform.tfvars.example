@@ -1,0 +1,12 @@
+project_id                         = "your-gcp-project-id"
+pool_id                            = "github-pool"
+provider_id                        = "github-provider"
+service_account_id                 = "github-deployer"
+service_account_display_name       = "GitHub Actions Deployer"
+github_repository                  = "your-org/your-repo"
+github_branch                      = "main"
+grant_service_account_token_creator = false
+
+service_account_roles = [
+  "roles/viewer",
+]
